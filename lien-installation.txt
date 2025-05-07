@@ -1,0 +1,78 @@
+https://www.rabbitmq.com/docs/install-debian
+
+npm install amqplib
+npm install --save-dev typescript ts-node @types/node
+
+Activer plugin web UI :
+sudo rabbitmq-plugins enable rabbitmq_management
+
+Voir frame_max :
+sudo rabbitmqctl environment | grep frame_max
+
+sudo systemctl restart rabbitmq-server
+
+Vérification :
+sudo ss -tulnp | grep 5672
+
+Voir log
+sudo tail -f /var/log/rabbitmq/rabbit@$(hostname).log
+
+Les listes des commandes usuelles
+Lister les utilisateurs : 
+rabbitmqctl list_users
+
+Créer un utilisateur : 
+rabbitmqctl add_user mon_utilisateur mot_de_passe
+
+Changer le mot de passe : 
+rabbitmqctl change_password mon_utilisateur nouveau_mot_de_passe
+
+Gestion des droits tout droits: 
+rabbitmqctl set_permissions -p / mon_utilisateur ".*" ".*" ".*"
+
+Hôtes virtuels (vhosts) :
+Création :
+rabbitmqctl add_vhost mon_vhost
+
+Assigner un utilisateur à u vhost : 
+rabbitmqctl set_permissions -p mon_vhost mon_utilisateur ".*" ".*" ".*"
+
+
+Configuration touchées : 
+sudo nano /etc/rabbitmq/advanced.config
+
+User : 
+sudo rabbitmqctl add_user Sarobidy MandaRabbit02
+
+
+
+package.json : 
+{
+  "name": "rabbitmq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "producer": "ts-node src/producer.ts",
+    "consomme": "ts-node src/index.ts",
+    "all-consumer": "ts-node src/consumers/allNotificationsConsumer.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@ljharb/tsconfig": "^0.3.2",
+    "@types/amqplib": "^0.8.0",
+    "@types/node": "^22.15.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@slack/webhook": "^6.0.1",
+    "amqplib": "^0.8.0",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0"
+  }
+}
+
